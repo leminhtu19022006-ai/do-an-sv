@@ -1,0 +1,788 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MealMate | Ăn ngon vừa túi</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --green: #2f7d3d;
+            --light-green: #e8f2e6;
+            --orange: #f38f33;
+            --light-orange: #fff3e6;
+            --bg: #f9f7f0;
+            --paper: #ffffff;
+            --text: #1e3a29;
+            --muted: #6b7a6a;
+            --border: #e5e8db;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 14px;
+            overflow-x: hidden;
+        }
+        button { cursor: pointer; font-family: inherit; border: none; background: none; }
+        a { text-decoration: none; color: inherit; }
+        
+        .page { max-width: 1600px; margin: 0 auto; padding: 20px; }
+
+        /* --- TOP BAR --- */
+        .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
+        
+        /* LOGO MỚI: HTML/CSS THUẦN, KHÔNG THỂ LỖI */
+        .brand-area { display: flex; align-items: center; gap: 5px; cursor: pointer; text-decoration: none; }
+        
+        .brand-icon-svg { width: 80px; height: 80px; flex-shrink: 0; }
+        
+        .brand-text-wrap { display: flex; flex-direction: column; justify-content: center; }
+        
+        .brand-title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1;
+            letter-spacing: -1px;
+            display: flex;
+            align-items: flex-end;
+        }
+        
+        .brand-title .meal { color: var(--green); }
+        .brand-title .mate { color: var(--orange); position: relative; }
+        
+        /* Chiếc lá nhỏ trên chữ e */
+        .leaf-icon {
+            position: absolute;
+            top: 0;
+            right: -15px;
+            width: 16px;
+            height: 16px;
+            background-color: var(--green);
+            border-radius: 50% 0 50% 50%;
+            transform: rotate(-15deg);
+        }
+
+        .brand-slogan {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--green);
+            margin-top: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .slogan-lines {
+            display: inline-block;
+            width: 15px;
+            height: 8px;
+            position: relative;
+        }
+        .slogan-lines::before, .slogan-lines::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 2.5px;
+            background-color: var(--orange);
+            border-radius: 2px;
+        }
+        .slogan-lines::before { top: 0; left: 0; transform: rotate(-15deg); }
+        .slogan-lines::after { bottom: 0; left: 2px; transform: rotate(-15deg); }
+
+        .slogan {
+            font-family: 'Dancing Script', cursive; font-size: 28px; color: var(--green);
+            text-align: center; line-height: 1.2; transform: rotate(-3deg);
+        }
+
+        .benefits { display: flex; gap: 15px; }
+        .benefit { display: flex; flex-direction: column; align-items: center; text-align: center; width: 70px; }
+        .benefit-icon {
+            width: 45px; height: 45px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            font-size: 20px; margin-bottom: 5px; border: 2px solid var(--green); color: var(--green);
+        }
+        .benefit:nth-child(even) .benefit-icon { border-color: var(--orange); color: var(--orange); }
+        .benefit span { font-size: 10px; font-weight: 700; color: var(--text); line-height: 1.2; }
+
+        /* --- MAIN LAYOUT --- */
+        .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+        .panel { background: var(--paper); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
+
+        /* --- SIDEBAR TRÁI --- */
+        .sidebar { padding: 20px 15px; display: flex; flex-direction: column; min-height: 750px; }
+        .nav-btn {
+            display: flex; align-items: center; gap: 12px; padding: 14px 15px; border-radius: 12px;
+            font-weight: 600; font-size: 14px; color: var(--text); transition: 0.2s; margin-bottom: 5px; width: 100%; text-align: left;
+        }
+        .nav-btn i { font-size: 18px; width: 24px; text-align: center; color: var(--muted); transition: 0.2s; }
+        .nav-btn.active { background: var(--light-green); color: var(--green); font-weight: 700; }
+        .nav-btn.active i { color: var(--green); }
+        .nav-btn:hover:not(.active) { background: #f5f5f5; }
+
+        .brush-title {
+            background: var(--green); color: white; text-align: center; padding: 8px; border-radius: 20px;
+            font-family: 'Dancing Script', cursive; font-size: 20px; margin: 30px 0 10px; transform: rotate(-2deg);
+        }
+        .side-sub { text-align: center; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
+        
+        /* Logo Sidebar */
+        .side-brand { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-direction: column; align-items: center; }
+        .side-brand-icon { width: 60px; height: 60px; }
+        .side-brand-title {
+            font-size: 28px; font-weight: 800; line-height: 1; letter-spacing: -1px; display: flex; margin-top: 5px;
+        }
+        .side-brand-slogan { font-size: 9px; font-weight: 700; color: var(--green); margin-top: 3px; }
+
+        .side-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: auto; }
+        .feature-item .f-icon {
+            width: 38px; height: 38px; background: var(--green); color: white; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center; margin: 0 auto 5px; font-size: 15px;
+        }
+        .feature-item span { font-size: 9px; font-weight: 600; line-height: 1.2; display: block; }
+
+        /* --- CỘT GIỮA (NỘI DUNG ĐỘNG) --- */
+        main { display: flex; flex-direction: column; gap: 20px; min-height: 750px; }
+        
+        /* Hero Banner (Trang chủ) */
+        .hero {
+            background: linear-gradient(135deg, #fdfbf5, #f0f6ee); border-radius: 20px; padding: 25px 30px;
+            display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border);
+            position: relative; overflow: hidden;
+        }
+        .hero-content h2 { font-family: 'Dancing Script', cursive; font-size: 38px; color: var(--green); line-height: 1.1; margin-bottom: 15px; }
+        .hero-btn {
+            background: var(--orange); color: white; padding: 10px 24px; border-radius: 30px;
+            font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(243, 143, 51, 0.3); transition: 0.2s;
+        }
+        .hero-btn:hover { background: #e07b20; transform: translateY(-2px); }
+        .hero-img { width: 260px; height: 150px; object-fit: cover; border-radius: 15px; border: 4px solid white; box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: rotate(2deg); }
+
+        /* Danh mục (Categories) */
+        .categories { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .cat-card { background: var(--paper); border-radius: 15px; overflow: hidden; border: 1px solid var(--border); display: flex; flex-direction: column; cursor: pointer; transition: 0.2s; }
+        .cat-card:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .cat-header { background: var(--green); padding: 12px 10px; display: flex; align-items: center; gap: 10px; color: white; }
+        .cat-card:nth-child(even) .cat-header { background: var(--orange); }
+        .cat-icon { width: 35px; height: 35px; background: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: var(--green); font-size: 16px; flex-shrink: 0; }
+        .cat-card:nth-child(even) .cat-icon { color: var(--orange); }
+        .cat-header h3 { font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+        .cat-header p { font-size: 10px; opacity: 0.9; }
+        .cat-body { padding: 12px 10px; font-size: 10px; color: var(--muted); line-height: 1.4; flex-grow: 1; }
+
+        /* Tiêu đề Section */
+        .section-title { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; margin-top: 10px; }
+        .section-title h2 { font-size: 20px; font-weight: 700; color: var(--green); display: flex; align-items: center; gap: 8px; }
+        .section-title a { font-size: 12px; color: var(--green); font-weight: 600; cursor: pointer; }
+
+        /* Grid Món ăn */
+        .dish-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; }
+        .dish-card {
+            background: var(--paper); border-radius: 12px; border: 1px solid var(--border);
+            padding: 8px; transition: 0.2s; display: flex; flex-direction: column; cursor: pointer;
+        }
+        .dish-card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.08); transform: translateY(-3px); border-color: var(--green); }
+        .dish-img-wrap { position: relative; height: 120px; border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+        .dish-img-wrap img { width: 100%; height: 100%; object-fit: cover; transition: 0.3s; }
+        .dish-card:hover .dish-img-wrap img { transform: scale(1.05); }
+        .badge { position: absolute; top: 5px; left: 5px; background: var(--orange); color: white; font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 12px; }
+        .dish-card h3 { font-size: 13px; font-weight: 700; margin-bottom: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .dish-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+        .dish-price { font-size: 14px; font-weight: 800; color: var(--green); }
+        .btn-add { width: 26px; height: 26px; border-radius: 50%; background: var(--light-green); color: var(--green); display: flex; justify-content: center; align-items: center; font-size: 12px; transition: 0.2s; }
+        .btn-add:hover { background: var(--green); color: white; }
+
+        /* --- CÁC TRANG CON (TAB) --- */
+        .page-tab { display: none; animation: fadeIn 0.3s ease; }
+        .page-tab.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .info-box { background: var(--paper); border-radius: 15px; border: 1px solid var(--border); padding: 30px; text-align: center; }
+        .info-box i { font-size: 50px; color: var(--orange); margin-bottom: 15px; }
+        .info-box h2 { font-size: 20px; color: var(--green); margin-bottom: 10px; }
+        .info-box p { color: var(--muted); font-size: 13px; }
+
+        /* --- CỘT PHẢI (GIỎ HÀNG) --- */
+        .cart { display: flex; flex-direction: column; padding: 20px; height: 100%; min-height: 750px; position: sticky; top: 20px; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
+        .cart-header h2 { font-size: 16px; color: var(--green); display: flex; align-items: center; gap: 8px; }
+        .cart-count { background: var(--green); color: white; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .btn-clear { font-size: 11px; color: var(--muted); font-weight: 600; }
+        .btn-clear:hover { color: red; }
+
+        .cart-items { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; max-height: 450px; padding-right: 5px;}
+        .cart-item { display: flex; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .cart-info { flex-grow: 1; position: relative; }
+        .cart-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; padding-right: 15px; }
+        .cart-info p { font-size: 10px; color: var(--muted); margin-bottom: 5px; }
+        .cart-price { font-size: 12px; font-weight: 700; color: var(--green); }
+        .btn-remove { position: absolute; top: 0; right: 0; color: #ccc; font-size: 14px; }
+        .btn-remove:hover { color: red; }
+        .qty-control { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: -15px; }
+        .qty-control button { width: 22px; height: 22px; border: 1px solid var(--border); border-radius: 4px; background: #f9f9f9; font-size: 12px; display: flex; justify-content: center; align-items: center; }
+        .qty-control button:hover { background: var(--light-green); }
+        .qty-control span { font-size: 12px; font-weight: 700; width: 20px; text-align: center; }
+
+        .checkout-section { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
+        .coupon-area h3 { font-size: 12px; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .coupon-input { display: flex; gap: 5px; margin-bottom: 5px; }
+        .coupon-input input { flex-grow: 1; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 11px; outline: none; }
+        .coupon-input input:focus { border-color: var(--green); }
+        .coupon-input button { background: var(--green); color: white; padding: 0 12px; border-radius: 6px; font-weight: 600; font-size: 11px; }
+        .coupon-msg { font-size: 10px; color: var(--green); min-height: 14px; margin-bottom: 10px; }
+        
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700; font-size: 14px; }
+        .total-row span:last-child { font-size: 18px; color: var(--green); }
+        .btn-checkout { width: 100%; background: var(--green); color: white; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; transition: 0.2s; }
+        .btn-checkout:hover { background: #215c2b; }
+
+        /* --- MODAL CHI TIẾT SẢN PHẨM --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: 0.3s;
+        }
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-content {
+            background: var(--paper); width: 90%; max-width: 600px; border-radius: 20px;
+            overflow: hidden; display: flex; position: relative; transform: scale(0.9); transition: 0.3s;
+        }
+        .modal-overlay.active .modal-content { transform: scale(1); }
+        .modal-close { position: absolute; top: 15px; right: 15px; background: white; width: 30px; height: 30px; border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10; font-size: 16px; color: var(--text); }
+        .modal-close:hover { color: red; }
+        .modal-img { width: 45%; object-fit: cover; }
+        .modal-info { width: 55%; padding: 30px; display: flex; flex-direction: column; justify-content: center; }
+        .modal-info h2 { font-size: 24px; color: var(--green); margin-bottom: 10px; }
+        .modal-info .modal-price { font-size: 22px; font-weight: 800; color: var(--orange); margin-bottom: 15px; }
+        .modal-info p { font-size: 13px; color: var(--muted); line-height: 1.5; margin-bottom: 20px; }
+        .modal-action { display: flex; gap: 10px; align-items: center; }
+        .modal-action .qty-control { margin-top: 0; background: #f5f5f5; padding: 5px 10px; border-radius: 8px; }
+        .modal-action .btn-add-modal { flex-grow: 1; background: var(--green); color: white; padding: 12px; border-radius: 8px; font-weight: 700; font-size: 14px; transition: 0.2s; }
+        .modal-action .btn-add-modal:hover { background: #215c2b; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+            background: var(--green); color: white; padding: 12px 24px; border-radius: 30px;
+            font-weight: 600; font-size: 13px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            opacity: 0; pointer-events: none; transition: 0.3s; z-index: 2000;
+        }
+        .toast.show { opacity: 1; transform: translateX(-50%) translateY(-10px); }
+
+    </style>
+</head>
+<body>
+
+<div class="page">
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <!-- LOGO HTML/CSS THUẦN - KHÔNG THỂ LỖI -->
+        <div class="brand-area" onclick="switchTab('home')">
+            <!-- Hình vẽ bát cơm -->
+            <svg class="brand-icon-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                <g fill="#368f3a">
+                    <path d="M 40 110 Q 20 100 25 75 Q 40 90 40 110 Z" />
+                    <path d="M 160 110 Q 180 100 175 75 Q 160 90 160 110 Z" />
+                </g>
+                <g>
+                    <circle cx="100" cy="35" r="25" fill="#f8b126" />
+                    <circle cx="100" cy="35" r="20" fill="#f9b934" />
+                    <path d="M 100 22 V 48 M 96 28 Q 104 28 104 33 Q 104 38 96 38 Q 88 38 88 43 Q 88 48 96 48" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+                </g>
+                <g>
+                    <circle cx="70" cy="80" r="12" fill="#368f3a" />
+                    <circle cx="80" cy="75" r="10" fill="#368f3a" />
+                    <circle cx="60" cy="75" r="10" fill="#368f3a" />
+                    <circle cx="135" cy="85" r="10" fill="#e33b28" />
+                    <path d="M 135 75 L 135 85" stroke="#fff" stroke-width="2" />
+                    <path d="M 120 85 L 130 75 L 125 95 Z" fill="#f28e2b" />
+                    <path d="M 130 75 L 135 70" stroke="#368f3a" stroke-width="2" />
+                </g>
+                <path d="M 60 85 Q 100 65 140 85 Q 130 100 100 105 Q 70 100 60 85 Z" fill="#ffffff" />
+                <circle cx="80" cy="85" r="1.5" fill="#e0e0e0"/>
+                <circle cx="90" cy="80" r="1.5" fill="#e0e0e0"/>
+                <circle cx="110" cy="82" r="1.5" fill="#e0e0e0"/>
+                <circle cx="120" cy="88" r="1.5" fill="#e0e0e0"/>
+                <g>
+                    <path d="M 55 100 Q 75 90 85 105 Q 70 115 55 100 Z" fill="#d97736" />
+                    <path d="M 60 98 L 75 102 M 62 103 L 78 106" stroke="#7a3a16" stroke-width="2" stroke-linecap="round" />
+                </g>
+                <path d="M 45 95 C 45 95, 35 140, 60 160 C 85 170, 115 170, 140 160 C 165 140, 155 95, 155 95 Z" fill="#fcf6e5" stroke="#2d7236" stroke-width="6" stroke-linejoin="round" />
+                <g>
+                    <path d="M 75 130 Q 80 123 85 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <path d="M 115 130 Q 120 123 125 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    <ellipse cx="70" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
+                    <ellipse cx="130" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
+                    <path d="M 90 138 Q 100 148 110 138" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                </g>
+                <path d="M 140 60 L 148 55 M 138 50 L 145 42 M 135 40 L 140 30" stroke="#368f3a" stroke-width="4" stroke-linecap="round" />
+            </svg>
+            
+            <!-- Chữ MealMate (HTML) -->
+            <div class="brand-text-wrap">
+                <div class="brand-title">
+                    <span class="meal">Meal</span>
+                    <span class="mate">Mate<span class="leaf-icon"></span></span>
+                </div>
+                <div class="brand-slogan">
+                    <span class="slogan-lines"></span>
+                    Đặt cơm theo ngân sách sinh viên.
+                </div>
+            </div>
+        </div>
+        
+        <div class="slogan">
+            "Bữa ăn ngon<br>cho hành trình<br>học tập của bạn!"
+        </div>
+
+        <div class="benefits">
+            <div class="benefit">
+                <div class="benefit-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <span>Giá hợp lý</span>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon"><i class="fa-solid fa-leaf"></i></div>
+                <span>Nguyên liệu<br>an toàn</span>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon"><i class="fa-solid fa-heart"></i></div>
+                <span>Đủ chất<br>Khỏe mạnh</span>
+            </div>
+            <div class="benefit">
+                <div class="benefit-icon"><i class="fa-solid fa-users"></i></div>
+                <span>Đồng hành<br>cùng sinh viên</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- LAYOUT 3 CỘT -->
+    <div class="layout">
+        
+        <!-- CỘT TRÁI (SIDEBAR) -->
+        <aside class="panel sidebar">
+            <nav>
+                <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Trang chủ</button>
+                <button class="nav-btn" data-tab="menu" onclick="switchTab('menu')"><i class="fa-solid fa-utensils"></i> Thực đơn</button>
+                <button class="nav-btn" data-tab="orders" onclick="switchTab('orders')"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</button>
+                <button class="nav-btn" data-tab="promotions" onclick="switchTab('promotions')"><i class="fa-solid fa-tag"></i> Ưu đãi</button>
+                <button class="nav-btn" data-tab="account" onclick="switchTab('account')"><i class="fa-solid fa-user"></i> Tài khoản</button>
+            </nav>
+
+            <div class="brush-title">Giao diện đặt hàng</div>
+            <div class="side-sub">Đơn giản - Nhanh chóng - Tiện lợi</div>
+
+            <!-- LOGO NHỎ Ở SIDEBAR (HTML) -->
+            <div class="side-brand">
+                <svg class="side-brand-icon" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="#368f3a">
+                        <path d="M 40 110 Q 20 100 25 75 Q 40 90 40 110 Z" />
+                        <path d="M 160 110 Q 180 100 175 75 Q 160 90 160 110 Z" />
+                    </g>
+                    <g>
+                        <circle cx="100" cy="35" r="25" fill="#f8b126" />
+                        <circle cx="100" cy="35" r="20" fill="#f9b934" />
+                        <path d="M 100 22 V 48 M 96 28 Q 104 28 104 33 Q 104 38 96 38 Q 88 38 88 43 Q 88 48 96 48" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
+                    </g>
+                    <g>
+                        <circle cx="70" cy="80" r="12" fill="#368f3a" />
+                        <circle cx="80" cy="75" r="10" fill="#368f3a" />
+                        <circle cx="60" cy="75" r="10" fill="#368f3a" />
+                        <circle cx="135" cy="85" r="10" fill="#e33b28" />
+                        <path d="M 135 75 L 135 85" stroke="#fff" stroke-width="2" />
+                        <path d="M 120 85 L 130 75 L 125 95 Z" fill="#f28e2b" />
+                        <path d="M 130 75 L 135 70" stroke="#368f3a" stroke-width="2" />
+                    </g>
+                    <path d="M 60 85 Q 100 65 140 85 Q 130 100 100 105 Q 70 100 60 85 Z" fill="#ffffff" />
+                    <circle cx="80" cy="85" r="1.5" fill="#e0e0e0"/>
+                    <circle cx="90" cy="80" r="1.5" fill="#e0e0e0"/>
+                    <circle cx="110" cy="82" r="1.5" fill="#e0e0e0"/>
+                    <circle cx="120" cy="88" r="1.5" fill="#e0e0e0"/>
+                    <g>
+                        <path d="M 55 100 Q 75 90 85 105 Q 70 115 55 100 Z" fill="#d97736" />
+                        <path d="M 60 98 L 75 102 M 62 103 L 78 106" stroke="#7a3a16" stroke-width="2" stroke-linecap="round" />
+                    </g>
+                    <path d="M 45 95 C 45 95, 35 140, 60 160 C 85 170, 115 170, 140 160 C 165 140, 155 95, 155 95 Z" fill="#fcf6e5" stroke="#2d7236" stroke-width="6" stroke-linejoin="round" />
+                    <g>
+                        <path d="M 75 130 Q 80 123 85 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                        <path d="M 115 130 Q 120 123 125 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                        <ellipse cx="70" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
+                        <ellipse cx="130" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
+                        <path d="M 90 138 Q 100 148 110 138" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
+                    </g>
+                </svg>
+                <div class="side-brand-title">
+                    <span class="meal">Meal</span>
+                    <span class="mate">Mate</span>
+                </div>
+                <div class="side-brand-slogan">Đặt cơm theo ngân sách sinh viên.</div>
+            </div>
+
+            <div class="side-features">
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <span>Đặt món<br>mọi lúc, mọi nơi</span>
+                </div>
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                    <span>Theo dõi<br>real-time</span>
+                </div>
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-users"></i></div>
+                    <span>Đặt cơm<br>theo nhóm</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- CỘT GIỮA (NỘI DUNG THAY ĐỔI) -->
+        <main>
+            <!-- TAB 1: TRANG CHỦ -->
+            <div id="tab-home" class="page-tab active">
+                <section class="hero">
+                    <div class="hero-content">
+                        <h2>Đặt cơm dễ dàng<br>Ăn ngon mỗi ngày!</h2>
+                        <button class="hero-btn" onclick="switchTab('menu')">Đặt ngay <i class="fa-solid fa-arrow-right"></i></button>
+                    </div>
+                    <img class="hero-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Cơm hộp">
+                </section>
+
+                <section class="categories">
+                    <div class="cat-card" onclick="switchTab('menu')">
+                        <div class="cat-header">
+                            <div class="cat-icon"><i class="fa-solid fa-utensils"></i></div>
+                            <div><h3>Cơm tiết kiệm</h3><p>20.000 - 25.000đ</p></div>
+                        </div>
+                        <div class="cat-body">Suất cơm gồm món chính đơn giản và rau hoặc món ăn kèm.</div>
+                    </div>
+                    <div class="cat-card" onclick="switchTab('menu')">
+                        <div class="cat-header">
+                            <div class="cat-icon"><i class="fa-solid fa-bowl-food"></i></div>
+                            <div><h3>Cơm đầy đủ</h3><p>26.000 - 35.000đ</p></div>
+                        </div>
+                        <div class="cat-body">Suất cơm gồm món chính và rau, có thể kèm canh.</div>
+                    </div>
+                    <div class="cat-card" onclick="switchTab('menu')">
+                        <div class="cat-header">
+                            <div class="cat-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                            <div><h3>Cơm tự chọn</h3><p>Giá tùy món</p></div>
+                        </div>
+                        <div class="cat-body">Sinh viên tự chọn món chính và món ăn kèm theo thực đơn của quán.</div>
+                    </div>
+                    <div class="cat-card" onclick="switchTab('menu')">
+                        <div class="cat-header">
+                            <div class="cat-icon"><i class="fa-solid fa-seedling"></i></div>
+                            <div><h3>Cơm chay</h3><p>25.000 - 35.000đ</p></div>
+                        </div>
+                        <div class="cat-body">Các món có đậu hũ, nấm, rau và nguyên liệu chay khác.</div>
+                    </div>
+                </section>
+
+                <div class="section-title">
+                    <h2><i class="fa-solid fa-leaf"></i> Món ăn nổi bật</h2>
+                    <a onclick="switchTab('menu')">Xem tất cả <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+                <div class="dish-grid" id="home-dishes"></div>
+            </div>
+
+            <!-- TAB 2: THỰC ĐƠN -->
+            <div id="tab-menu" class="page-tab">
+                <div class="section-title" style="margin-top: 0;">
+                    <h2><i class="fa-solid fa-utensils"></i> Toàn bộ thực đơn</h2>
+                </div>
+                <div class="dish-grid" id="all-dishes"></div>
+            </div>
+
+            <!-- TAB 3: ĐƠN HÀNG -->
+            <div id="tab-orders" class="page-tab">
+                <div class="info-box">
+                    <i class="fa-solid fa-box-open"></i>
+                    <h2>Chưa có đơn hàng nào</h2>
+                    <p>Bạn chưa đặt món ăn nào tại MealMate. Hãy chọn cho mình một bữa ăn ngon nhé!</p>
+                    <button class="hero-btn" style="margin-top: 20px;" onclick="switchTab('menu')">Đặt món ngay</button>
+                </div>
+            </div>
+
+            <!-- TAB 4: ƯU ĐÃI -->
+            <div id="tab-promotions" class="page-tab">
+                <div class="info-box">
+                    <i class="fa-solid fa-gift"></i>
+                    <h2>Ưu đãi đặc biệt</h2>
+                    <p>Nhập mã <b>MEALMATE10</b> tại giỏ hàng để được giảm 10% cho đơn từ 50.000đ.</p>
+                    <p style="margin-top: 10px; font-size: 12px;">(Các chương trình khuyến mãi khác đang được cập nhật)</p>
+                </div>
+            </div>
+
+            <!-- TAB 5: TÀI KHOẢN -->
+            <div id="tab-account" class="page-tab">
+                <div class="info-box">
+                    <i class="fa-solid fa-circle-user"></i>
+                    <h2>Thông tin tài khoản</h2>
+                    <p>Xin chào, <b>Sinh viên</b>!</p>
+                    <p style="margin-top: 10px;">Bạn đang có <b>0</b> điểm tích lũy.</p>
+                </div>
+            </div>
+            
+            <div class="footer-note" style="text-align: right; margin-top: 20px; font-family: 'Dancing Script', cursive; font-size: 22px; color: var(--green);">
+                MealMate
+                <span style="display: block; font-family: 'Quicksand', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 5px;">- Người bạn đồng hành trên mỗi bữa ăn! <i class="fa-solid fa-heart" style="color: var(--orange);"></i></span>
+            </div>
+        </main>
+
+        <!-- CỘT PHẢI (GIỎ HÀNG) -->
+        <aside class="panel cart">
+            <div class="cart-header">
+                <h2><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng <span class="cart-count" id="cart-count">0</span></h2>
+                <button class="btn-clear" onclick="clearCart()">Xóa tất cả</button>
+            </div>
+            
+            <div class="cart-items" id="cart-items">
+                <!-- Render từ JS -->
+            </div>
+
+            <div class="checkout-section">
+                <div class="coupon-area">
+                    <h3><i class="fa-solid fa-ticket"></i> Mã giảm giá</h3>
+                    <div class="coupon-input">
+                        <input type="text" id="coupon" placeholder="Nhập mã">
+                        <button onclick="applyCoupon()">Áp dụng</button>
+                    </div>
+                    <div class="coupon-msg" id="coupon-msg"></div>
+                </div>
+                
+                <div class="total-row">
+                    <span>Tổng tiền</span>
+                    <span id="total-price">0đ</span>
+                </div>
+                <button class="btn-checkout" onclick="checkout()">Đặt hàng</button>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!-- MODAL CHI TIẾT SẢN PHẨM -->
+<div class="modal-overlay" id="product-modal">
+    <div class="modal-content">
+        <button class="modal-close" onclick="closeModal()"><i class="fa-solid fa-xmark"></i></button>
+        <img id="modal-img" class="modal-img" src="" alt="">
+        <div class="modal-info">
+            <h2 id="modal-title"></h2>
+            <div id="modal-price" class="modal-price"></div>
+            <p id="modal-desc"></p>
+            <div class="modal-action">
+                <div class="qty-control">
+                    <button onclick="changeModalQty(-1)">-</button>
+                    <span id="modal-qty">1</span>
+                    <button onclick="changeModalQty(1)">+</button>
+                </div>
+                <button class="btn-add-modal" id="btn-add-modal" onclick="addFromModal()">Thêm vào giỏ</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// Dữ liệu món ăn
+const menuData = [
+    { id: 1, name: 'Cơm trứng chiên', price: 20000, img: 'https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', label: 'Bán chạy', desc: 'Cơm trắng dẻo thơm ăn kèm trứng chiên lòng đào béo ngậy, thêm chút rau xanh và nước tương đậm đà.' },
+    { id: 2, name: 'Cơm thịt kho trứng', price: 28000, img: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Thịt ba chỉ kho mềm tan cùng trứng cút, nước kho sền sệt đậm vị, ăn kèm dưa giá rất hao cơm.' },
+    { id: 3, name: 'Cơm sườn nướng + rau củ', price: 30000, img: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Sườn non ướp mật ong nướng than hồng thơm lừng, ăn kèm rau củ luộc và nước mắm chua ngọt.' },
+    { id: 4, name: 'Cơm nấm kho', price: 25000, img: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Nấm rơm tươi kho tiêu đậm đà, thanh vị. Lựa chọn hoàn hảo cho bữa ăn thanh đạm.' },
+    { id: 5, name: 'Cơm chay thập cẩm', price: 32000, img: 'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Đậu hũ sốt cà, rau củ xào thập cẩm, canh rong biển. Bữa ăn chay đầy đủ dinh dưỡng.' },
+    { id: 6, name: 'Cơm cá kho + rau muống', price: 30000, img: 'https://images.unsplash.com/photo-1580476262798-bddd9f4b7369?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Cá basa kho tộ đậm đà, thịt cá chắc ngọt, ăn kèm rau muống xào tỏi.' },
+    { id: 7, name: 'Cơm gà sốt', price: 32000, img: 'https://images.unsplash.com/photo-1564834724105-918b73d1b9e0?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Đùi gà góc tư chiên giòn rụm, rưới sốt nước mắm tỏi ớt đặc biệt của quán.' },
+    { id: 8, name: 'Cơm sườn nướng', price: 35000, img: 'https://images.unsplash.com/photo-1626804475297-41608ea09aeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80', desc: 'Miếng sườn to bản nướng xém cạnh, thơm mùi sả, ăn kèm đồ chua.' }
+];
+
+let cart = { 2: 1, 7: 1 }; // Giỏ hàng mặc định
+let discount = 0;
+let currentModalProductId = null;
+let currentModalQty = 1;
+
+const money = (n) => Math.round(n).toLocaleString('vi-VN') + 'đ';
+
+// --- RENDER MÓN ĂN ---
+function createDishHTML(m) {
+    return `
+        <article class="dish-card" onclick="openModal(${m.id})">
+            <div class="dish-img-wrap">
+                <img src="${m.img}" alt="${m.name}">
+                ${m.label ? `<span class="badge">${m.label}</span>` : ''}
+            </div>
+            <h3 title="${m.name}">${m.name}</h3>
+            <div class="dish-bottom">
+                <span class="dish-price">${money(m.price)}</span>
+                <button class="btn-add" onclick="event.stopPropagation(); addToCart(${m.id}, 1)"><i class="fa-solid fa-plus"></i></button>
+            </div>
+        </article>
+    `;
+}
+
+function renderMenus() {
+    document.getElementById('home-dishes').innerHTML = menuData.slice(0, 4).map(createDishHTML).join('');
+    document.getElementById('all-dishes').innerHTML = menuData.map(createDishHTML).join('');
+}
+
+// --- CHUYỂN TAB ---
+function switchTab(tabId) {
+    document.querySelectorAll('.page-tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById(`tab-${tabId}`).classList.add('active');
+    
+    document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelector(`.nav-btn[data-tab="${tabId}"]`).classList.add('active');
+    
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- XỬ LÝ MODAL ---
+function openModal(id) {
+    const product = menuData.find(m => m.id === id);
+    if (!product) return;
+    
+    currentModalProductId = id;
+    currentModalQty = 1;
+    
+    document.getElementById('modal-img').src = product.img;
+    document.getElementById('modal-title').textContent = product.name;
+    document.getElementById('modal-price').textContent = money(product.price);
+    document.getElementById('modal-desc').textContent = product.desc || 'Món ăn thơm ngon, bổ dưỡng, được chế biến từ nguyên liệu tươi sạch.';
+    document.getElementById('modal-qty').textContent = currentModalQty;
+    
+    document.getElementById('product-modal').classList.add('active');
+}
+
+function closeModal() {
+    document.getElementById('product-modal').classList.remove('active');
+}
+
+function changeModalQty(n) {
+    if (currentModalQty + n >= 1) {
+        currentModalQty += n;
+        document.getElementById('modal-qty').textContent = currentModalQty;
+    }
+}
+
+function addFromModal() {
+    addToCart(currentModalProductId, currentModalQty);
+    closeModal();
+}
+
+document.getElementById('product-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+});
+
+// --- GIỎ HÀNG ---
+function renderCart() {
+    const ids = Object.keys(cart).filter(id => cart[id] > 0);
+    document.getElementById('cart-count').textContent = ids.reduce((s, id) => s + cart[id], 0);
+    
+    const target = document.getElementById('cart-items');
+    if (!ids.length) {
+        target.innerHTML = '<div style="text-align:center; padding: 20px; color: #888; font-size: 12px;">Giỏ hàng đang trống 🌱</div>';
+    } else {
+        target.innerHTML = ids.map(id => {
+            const m = menuData.find(x => x.id == id);
+            return `
+            <div class="cart-item">
+                <img src="${m.img}" alt="">
+                <div class="cart-info">
+                    <button class="btn-remove" onclick="removeItem(${m.id})"><i class="fa-solid fa-xmark"></i></button>
+                    <h4>${m.name}</h4>
+                    <p>Bình thường</p>
+                    <div class="cart-price">${money(m.price)}</div>
+                    <div class="qty-control">
+                        <button onclick="changeQty(${m.id}, -1)">-</button>
+                        <span>${cart[id]}</span>
+                        <button onclick="changeQty(${m.id}, 1)">+</button>
+                    </div>
+                </div>
+            </div>`;
+        }).join('');
+    }
+    
+    const subtotal = ids.reduce((s, id) => s + menuData.find(m => m.id == id).price * cart[id], 0);
+    document.getElementById('total-price').textContent = money(Math.max(0, subtotal - discount));
+}
+
+function addToCart(id, qty = 1) {
+    cart[id] = (cart[id] || 0) + qty;
+    renderCart();
+    showToast(`Đã thêm ${qty} phần vào giỏ hàng!`);
+}
+
+function changeQty(id, n) {
+    cart[id] = (cart[id] || 0) + n;
+    if (cart[id] <= 0) delete cart[id];
+    discount = 0; 
+    document.getElementById('coupon-msg').textContent = '';
+    renderCart();
+}
+
+function removeItem(id) {
+    delete cart[id];
+    discount = 0;
+    document.getElementById('coupon-msg').textContent = '';
+    renderCart();
+}
+
+function clearCart() {
+    if(confirm("Bạn có chắc muốn xóa toàn bộ giỏ hàng?")) {
+        cart = {};
+        discount = 0;
+        document.getElementById('coupon-msg').textContent = '';
+        renderCart();
+    }
+}
+
+function applyCoupon() {
+    const c = document.getElementById('coupon').value.trim().toUpperCase();
+    const subtotal = Object.keys(cart).reduce((s, id) => s + menuData.find(m => m.id == id).price * cart[id], 0);
+    const msg = document.getElementById('coupon-msg');
+    
+    if (c === 'MEALMATE10' && subtotal >= 50000) {
+        discount = Math.round(subtotal * 0.1);
+        msg.textContent = 'Áp dụng thành công: giảm 10%!';
+        msg.style.color = 'var(--green)';
+    } else if (c === 'MEALMATE10') {
+        discount = 0;
+        msg.textContent = 'Đơn từ 50.000đ để dùng mã này.';
+        msg.style.color = 'red';
+    } else {
+        discount = 0;
+        msg.textContent = 'Mã không hợp lệ. Thử MEALMATE10';
+        msg.style.color = 'red';
+    }
+    renderCart();
+}
+
+function checkout() {
+    const n = Object.values(cart).reduce((a, b) => a + b, 0);
+    if (!n) {
+        showToast('Bạn hãy thêm món trước khi đặt hàng nhé!');
+        return;
+    }
+    showToast('Đặt hàng thành công! Cảm ơn bạn 💚');
+    clearCart();
+    switchTab('orders');
+}
+
+// --- TIỆN ÍCH ---
+let toastTimer;
+function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// Khởi tạo
+renderMenus();
+renderCart();
+</script>
+</body>
+</html>
