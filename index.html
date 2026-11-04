@@ -59,35 +59,36 @@
         .benefit:nth-child(even) .benefit-icon { border-color: var(--orange); color: var(--orange); }
         .benefit span { font-size: 10px; font-weight: 700; color: var(--text); line-height: 1.2; }
 
-        /* --- MAIN LAYOUT (CHỈ CÒN 2 CỘT) --- */
+        /* --- MAIN LAYOUT (2 CỘT) --- */
         .layout { 
             display: grid; 
-            grid-template-columns: 320px minmax(0, 1fr); /* Cột trái rộng ra để chứa giỏ hàng, cột phải là nội dung */
+            grid-template-columns: 280px minmax(0, 1fr); 
             gap: 20px; 
             align-items: start; 
-        }
-        
-        /* Cột bên trái (Bao gồm Menu và Giỏ hàng) */
-        .left-column { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 20px; 
-            position: sticky; 
-            top: 20px; 
         }
 
         .panel { background: var(--paper); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
 
         /* --- SIDEBAR (MENU) --- */
-        .sidebar { padding: 20px 15px; }
+        .sidebar { padding: 20px 15px; position: sticky; top: 20px; }
         .nav-btn {
             display: flex; align-items: center; gap: 12px; padding: 14px 15px; border-radius: 12px;
             font-weight: 600; font-size: 14px; color: var(--text); transition: 0.2s; margin-bottom: 5px; width: 100%; text-align: left;
+            position: relative;
         }
         .nav-btn i { font-size: 18px; width: 24px; text-align: center; color: var(--muted); transition: 0.2s; }
         .nav-btn.active { background: var(--light-green); color: var(--green); font-weight: 700; }
         .nav-btn.active i { color: var(--green); }
         .nav-btn:hover:not(.active) { background: #f5f5f5; }
+        
+        /* Badge đếm số lượng trên icon Giỏ hàng */
+        .nav-badge {
+            position: absolute; right: 15px;
+            background: var(--orange); color: white;
+            font-size: 10px; font-weight: bold;
+            width: 20px; height: 20px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+        }
 
         .brush-title {
             background: var(--green); color: white; text-align: center; padding: 8px; border-radius: 20px;
@@ -102,43 +103,8 @@
         }
         .feature-item span { font-size: 9px; font-weight: 600; line-height: 1.2; display: block; }
 
-        /* --- GIỎ HÀNG (Đã chuyển sang cột trái) --- */
-        .cart { display: flex; flex-direction: column; padding: 20px; }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
-        .cart-header h2 { font-size: 16px; color: var(--green); display: flex; align-items: center; gap: 8px; }
-        .cart-count { background: var(--green); color: white; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .btn-clear { font-size: 11px; color: var(--muted); font-weight: 600; }
-        .btn-clear:hover { color: red; }
-
-        .cart-items { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; max-height: 300px; overflow-y: auto; padding-right: 5px;}
-        .cart-item { display: flex; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .cart-info { flex-grow: 1; position: relative; }
-        .cart-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; padding-right: 15px; }
-        .cart-info p { font-size: 10px; color: var(--muted); margin-bottom: 5px; }
-        .cart-price { font-size: 12px; font-weight: 700; color: var(--green); }
-        .btn-remove { position: absolute; top: 0; right: 0; color: #ccc; font-size: 14px; }
-        .btn-remove:hover { color: red; }
-        .qty-control { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: -15px; }
-        .qty-control button { width: 22px; height: 22px; border: 1px solid var(--border); border-radius: 4px; background: #f9f9f9; font-size: 12px; display: flex; justify-content: center; align-items: center; }
-        .qty-control button:hover { background: var(--light-green); }
-        .qty-control span { font-size: 12px; font-weight: 700; width: 20px; text-align: center; }
-
-        .checkout-section { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
-        .coupon-area h3 { font-size: 12px; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .coupon-input { display: flex; gap: 5px; margin-bottom: 5px; }
-        .coupon-input input { flex-grow: 1; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 11px; outline: none; }
-        .coupon-input input:focus { border-color: var(--green); }
-        .coupon-input button { background: var(--green); color: white; padding: 0 12px; border-radius: 6px; font-weight: 600; font-size: 11px; }
-        .coupon-msg { font-size: 10px; color: var(--green); min-height: 14px; margin-bottom: 10px; }
-        
-        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700; font-size: 14px; }
-        .total-row span:last-child { font-size: 18px; color: var(--green); }
-        .btn-checkout { width: 100%; background: var(--green); color: white; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; transition: 0.2s; }
-        .btn-checkout:hover { background: #215c2b; }
-
         /* --- CỘT PHẢI (NỘI DUNG ĐỘNG) --- */
-        main { display: flex; flex-direction: column; gap: 20px; min-height: 100vh; }
+        main { display: flex; flex-direction: column; gap: 20px; min-height: 80vh; }
         
         /* Hero Banner (Trang chủ) */
         .hero {
@@ -197,6 +163,44 @@
         .info-box i { font-size: 50px; color: var(--orange); margin-bottom: 15px; }
         .info-box h2 { font-size: 20px; color: var(--green); margin-bottom: 10px; }
         .info-box p { color: var(--muted); font-size: 13px; }
+
+        /* --- TRANG GIỎ HÀNG RIÊNG BIỆT --- */
+        .cart-page { display: flex; gap: 20px; }
+        .cart-list-wrapper { flex-grow: 1; background: var(--paper); border-radius: 20px; border: 1px solid var(--border); padding: 20px; }
+        .cart-summary-wrapper { width: 320px; background: var(--paper); border-radius: 20px; border: 1px solid var(--border); padding: 20px; height: fit-content; position: sticky; top: 20px; }
+
+        .cart-header-title { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 20px; }
+        .cart-header-title h2 { font-size: 20px; color: var(--green); }
+        
+        /* Danh sách item trong trang giỏ hàng */
+        .cart-item-lg { display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
+        .cart-item-lg img { width: 80px; height: 80px; border-radius: 12px; object-fit: cover; }
+        .cart-info-lg { flex-grow: 1; }
+        .cart-info-lg h4 { font-size: 16px; font-weight: 700; margin-bottom: 5px; }
+        .cart-info-lg p { font-size: 12px; color: var(--muted); margin-bottom: 10px; }
+        .cart-price-lg { font-size: 16px; font-weight: 700; color: var(--green); }
+        
+        .qty-control-lg { display: flex; align-items: center; gap: 10px; }
+        .qty-control-lg button { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 8px; background: #f9f9f9; font-size: 14px; display: flex; justify-content: center; align-items: center; }
+        .qty-control-lg button:hover { background: var(--light-green); }
+        .qty-control-lg span { font-size: 14px; font-weight: 700; width: 30px; text-align: center; }
+        .btn-remove-lg { color: #ccc; font-size: 18px; margin-left: 10px; }
+        .btn-remove-lg:hover { color: red; }
+
+        /* Khung thanh toán */
+        .coupon-area h3 { font-size: 14px; color: var(--green); margin-bottom: 10px; display: flex; align-items: center; gap: 5px; }
+        .coupon-input { display: flex; gap: 5px; margin-bottom: 5px; }
+        .coupon-input input { flex-grow: 1; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-size: 13px; outline: none; }
+        .coupon-input input:focus { border-color: var(--green); }
+        .coupon-input button { background: var(--green); color: white; padding: 0 15px; border-radius: 8px; font-weight: 600; font-size: 13px; }
+        .coupon-msg { font-size: 11px; color: var(--green); min-height: 16px; margin-bottom: 15px; }
+        
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 14px; color: var(--muted); }
+        .summary-row.total { font-weight: 700; color: var(--text); font-size: 16px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--border); margin-bottom: 20px; }
+        .summary-row.total span:last-child { color: var(--green); font-size: 20px; }
+        
+        .btn-checkout-lg { width: 100%; background: var(--green); color: white; padding: 15px; border-radius: 12px; font-size: 16px; font-weight: 700; transition: 0.2s; }
+        .btn-checkout-lg:hover { background: #215c2b; }
 
         /* --- MODAL CHI TIẾT SẢN PHẨM --- */
         .modal-overlay {
@@ -266,71 +270,45 @@
         </div>
     </header>
 
-    <!-- LAYOUT 2 CỘT (TRÁI: MENU + GIỎ HÀNG | PHẢI: NỘI DUNG) -->
+    <!-- LAYOUT 2 CỘT -->
     <div class="layout">
         
-        <!-- CỘT TRÁI -->
-        <div class="left-column">
-            <!-- MENU -->
-            <aside class="panel sidebar">
-                <nav>
-                    <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Trang chủ</button>
-                    <button class="nav-btn" data-tab="menu" onclick="switchTab('menu')"><i class="fa-solid fa-utensils"></i> Thực đơn</button>
-                    <button class="nav-btn" data-tab="orders" onclick="switchTab('orders')"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</button>
-                    <button class="nav-btn" data-tab="promotions" onclick="switchTab('promotions')"><i class="fa-solid fa-tag"></i> Ưu đãi</button>
-                    <button class="nav-btn" data-tab="account" onclick="switchTab('account')"><i class="fa-solid fa-user"></i> Tài khoản</button>
-                </nav>
-
-                <div class="brush-title">Giao diện đặt hàng</div>
-                <div class="side-sub">Đơn giản - Nhanh chóng - Tiện lợi</div>
+        <!-- CỘT TRÁI: MENU -->
+        <aside class="panel sidebar">
+            <nav>
+                <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Trang chủ</button>
+                <button class="nav-btn" data-tab="menu" onclick="switchTab('menu')"><i class="fa-solid fa-utensils"></i> Thực đơn</button>
+                <button class="nav-btn" data-tab="orders" onclick="switchTab('orders')"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</button>
+                <button class="nav-btn" data-tab="promotions" onclick="switchTab('promotions')"><i class="fa-solid fa-tag"></i> Ưu đãi</button>
+                <button class="nav-btn" data-tab="account" onclick="switchTab('account')"><i class="fa-solid fa-user"></i> Tài khoản</button>
                 
-                <div class="side-features">
-                    <div class="feature-item">
-                        <div class="f-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-                        <span>Đặt món<br>mọi lúc, mọi nơi</span>
-                    </div>
-                    <div class="feature-item">
-                        <div class="f-icon"><i class="fa-solid fa-motorcycle"></i></div>
-                        <span>Theo dõi<br>real-time</span>
-                    </div>
-                    <div class="feature-item">
-                        <div class="f-icon"><i class="fa-solid fa-users"></i></div>
-                        <span>Đặt cơm<br>theo nhóm</span>
-                    </div>
-                </div>
-            </aside>
+                <!-- NÚT GIỎ HÀNG ĐƯỢC THÊM VÀO ĐÂY -->
+                <button class="nav-btn" data-tab="cart" onclick="switchTab('cart')">
+                    <i class="fa-solid fa-cart-shopping"></i> Giỏ hàng
+                    <span class="nav-badge" id="menu-cart-count">0</span>
+                </button>
+            </nav>
 
-            <!-- GIỎ HÀNG (Đã chuyển vào đây) -->
-            <aside class="panel cart">
-                <div class="cart-header">
-                    <h2><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng <span class="cart-count" id="cart-count">0</span></h2>
-                    <button class="btn-clear" onclick="clearCart()">Xóa tất cả</button>
+            <div class="brush-title">Giao diện đặt hàng</div>
+            <div class="side-sub">Đơn giản - Nhanh chóng - Tiện lợi</div>
+            
+            <div class="side-features">
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                    <span>Đặt món<br>mọi lúc, mọi nơi</span>
                 </div>
-                
-                <div class="cart-items" id="cart-items">
-                    <!-- Render từ JS -->
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                    <span>Theo dõi<br>real-time</span>
                 </div>
+                <div class="feature-item">
+                    <div class="f-icon"><i class="fa-solid fa-users"></i></div>
+                    <span>Đặt cơm<br>theo nhóm</span>
+                </div>
+            </div>
+        </aside>
 
-                <div class="checkout-section">
-                    <div class="coupon-area">
-                        <h3><i class="fa-solid fa-ticket"></i> Mã giảm giá</h3>
-                        <div class="coupon-input">
-                            <input type="text" id="coupon" placeholder="Nhập mã">
-                            <button onclick="applyCoupon()">Áp dụng</button>
-                        </div>
-                        <div class="coupon-msg" id="coupon-msg"></div>
-                    </div>
-                    
-                    <div class="total-row">
-                        <span>Tổng tiền</span>
-                        <span id="total-price">0đ</span>
-                    </div>
-                    <button class="btn-checkout" onclick="checkout()">Đặt hàng</button>
-                </div>
-            </aside>
-        </div>
-
-        <!-- CỘT PHẢI (NỘI DUNG THAY ĐỔI) -->
+        <!-- CỘT PHẢI: NỘI DUNG THAY ĐỔI THEO TAB -->
         <main>
             <!-- TAB 1: TRANG CHỦ -->
             <div id="tab-home" class="page-tab active">
@@ -388,7 +366,51 @@
                 <div class="dish-grid" id="all-dishes"></div>
             </div>
 
-            <!-- TAB 3: ĐƠN HÀNG -->
+            <!-- TAB 3: GIỎ HÀNG (TRANG RIÊNG) -->
+            <div id="tab-cart" class="page-tab">
+                <div class="cart-page">
+                    <!-- Danh sách sản phẩm -->
+                    <div class="cart-list-wrapper">
+                        <div class="cart-header-title">
+                            <h2><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng của bạn</h2>
+                            <button class="btn-clear" style="font-size: 13px; color: #888;" onclick="clearCart()">Xóa tất cả</button>
+                        </div>
+                        <div id="cart-page-items">
+                            <!-- Render từ JS -->
+                        </div>
+                    </div>
+                    
+                    <!-- Thanh toán -->
+                    <div class="cart-summary-wrapper">
+                        <div class="coupon-area">
+                            <h3><i class="fa-solid fa-ticket"></i> Mã giảm giá</h3>
+                            <div class="coupon-input">
+                                <input type="text" id="coupon" placeholder="Nhập mã">
+                                <button onclick="applyCoupon()">Áp dụng</button>
+                            </div>
+                            <div class="coupon-msg" id="coupon-msg"></div>
+                        </div>
+                        
+                        <div class="summary-row">
+                            <span>Tạm tính</span>
+                            <span id="sub-total">0đ</span>
+                        </div>
+                        <div class="summary-row" id="discount-row" style="display:none; color: var(--orange);">
+                            <span>Giảm giá</span>
+                            <span id="discount-amount">0đ</span>
+                        </div>
+                        
+                        <div class="summary-row total">
+                            <span>Tổng tiền</span>
+                            <span id="total-price">0đ</span>
+                        </div>
+                        
+                        <button class="btn-checkout-lg" onclick="checkout()">Đặt hàng</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ĐƠN HÀNG -->
             <div id="tab-orders" class="page-tab">
                 <div class="info-box">
                     <i class="fa-solid fa-box-open"></i>
@@ -398,7 +420,7 @@
                 </div>
             </div>
 
-            <!-- TAB 4: ƯU ĐÃI -->
+            <!-- TAB 5: ƯU ĐÃI -->
             <div id="tab-promotions" class="page-tab">
                 <div class="info-box">
                     <i class="fa-solid fa-gift"></i>
@@ -408,7 +430,7 @@
                 </div>
             </div>
 
-            <!-- TAB 5: TÀI KHOẢN -->
+            <!-- TAB 6: TÀI KHOẢN -->
             <div id="tab-account" class="page-tab">
                 <div class="info-box">
                     <i class="fa-solid fa-circle-user"></i>
@@ -542,33 +564,47 @@ document.getElementById('product-modal').addEventListener('click', function(e) {
 // --- GIỎ HÀNG ---
 function renderCart() {
     const ids = Object.keys(cart).filter(id => cart[id] > 0);
-    document.getElementById('cart-count').textContent = ids.reduce((s, id) => s + cart[id], 0);
+    const totalQty = ids.reduce((s, id) => s + cart[id], 0);
     
-    const target = document.getElementById('cart-items');
+    // Cập nhật số lượng trên Menu
+    document.getElementById('menu-cart-count').textContent = totalQty;
+
+    const target = document.getElementById('cart-page-items');
     if (!ids.length) {
-        target.innerHTML = '<div style="text-align:center; padding: 20px; color: #888; font-size: 12px;">Giỏ hàng đang trống 🌱</div>';
+        target.innerHTML = '<div style="text-align:center; padding: 50px 0; color: #888; font-size: 16px;">Giỏ hàng đang trống 🌱<br><br><button class="hero-btn" onclick="switchTab(\'menu\')">Đi chợ mua đồ ngay</button></div>';
     } else {
         target.innerHTML = ids.map(id => {
             const m = menuData.find(x => x.id == id);
             return `
-            <div class="cart-item">
+            <div class="cart-item-lg">
                 <img src="${m.img}" alt="">
-                <div class="cart-info">
-                    <button class="btn-remove" onclick="removeItem(${m.id})"><i class="fa-solid fa-xmark"></i></button>
+                <div class="cart-info-lg">
                     <h4>${m.name}</h4>
-                    <p>Bình thường</p>
-                    <div class="cart-price">${money(m.price)}</div>
-                    <div class="qty-control">
-                        <button onclick="changeQty(${m.id}, -1)">-</button>
-                        <span>${cart[id]}</span>
-                        <button onclick="changeQty(${m.id}, 1)">+</button>
-                    </div>
+                    <p>Phân loại: Bình thường</p>
+                    <div class="cart-price-lg">${money(m.price)}</div>
                 </div>
+                <div class="qty-control-lg">
+                    <button onclick="changeQty(${m.id}, -1)">-</button>
+                    <span>${cart[id]}</span>
+                    <button onclick="changeQty(${m.id}, 1)">+</button>
+                </div>
+                <button class="btn-remove-lg" onclick="removeItem(${m.id})"><i class="fa-solid fa-trash"></i></button>
             </div>`;
         }).join('');
     }
     
+    // Tính toán tiền
     const subtotal = ids.reduce((s, id) => s + menuData.find(m => m.id == id).price * cart[id], 0);
+    
+    document.getElementById('sub-total').textContent = money(subtotal);
+    
+    if (discount > 0) {
+        document.getElementById('discount-row').style.display = 'flex';
+        document.getElementById('discount-amount').textContent = '-' + money(discount);
+    } else {
+        document.getElementById('discount-row').style.display = 'none';
+    }
+    
     document.getElementById('total-price').textContent = money(Math.max(0, subtotal - discount));
 }
 
