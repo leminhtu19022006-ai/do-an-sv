@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MealMate | Ăn ngon vừa túi</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=Dancing+Script:wght@600;700&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -31,68 +31,19 @@
         button { cursor: pointer; font-family: inherit; border: none; background: none; }
         a { text-decoration: none; color: inherit; }
         
-        .page { max-width: 1600px; margin: 0 auto; padding: 20px; }
+        .page { max-width: 1400px; margin: 0 auto; padding: 20px; }
 
         /* --- TOP BAR --- */
         .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding: 0 10px; }
         
-        /* LOGO MỚI: HTML/CSS THUẦN, KHÔNG THỂ LỖI */
-        .brand-area { display: flex; align-items: center; gap: 5px; cursor: pointer; text-decoration: none; }
-        
-        .brand-icon-svg { width: 80px; height: 80px; flex-shrink: 0; }
-        
-        .brand-text-wrap { display: flex; flex-direction: column; justify-content: center; }
-        
-        .brand-title {
-            font-size: 48px;
-            font-weight: 800;
-            line-height: 1;
-            letter-spacing: -1px;
-            display: flex;
-            align-items: flex-end;
+        /* Logo hiển thị chính xác 100% từ ảnh gốc (Base64) */
+        .brand-area { display: flex; align-items: center; cursor: pointer; }
+        .brand-logo-img {
+            height: 90px; 
+            width: auto;
+            object-fit: contain;
+            mix-blend-mode: multiply; 
         }
-        
-        .brand-title .meal { color: var(--green); }
-        .brand-title .mate { color: var(--orange); position: relative; }
-        
-        /* Chiếc lá nhỏ trên chữ e */
-        .leaf-icon {
-            position: absolute;
-            top: 0;
-            right: -15px;
-            width: 16px;
-            height: 16px;
-            background-color: var(--green);
-            border-radius: 50% 0 50% 50%;
-            transform: rotate(-15deg);
-        }
-
-        .brand-slogan {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--green);
-            margin-top: 5px;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
-        .slogan-lines {
-            display: inline-block;
-            width: 15px;
-            height: 8px;
-            position: relative;
-        }
-        .slogan-lines::before, .slogan-lines::after {
-            content: '';
-            position: absolute;
-            width: 8px;
-            height: 2.5px;
-            background-color: var(--orange);
-            border-radius: 2px;
-        }
-        .slogan-lines::before { top: 0; left: 0; transform: rotate(-15deg); }
-        .slogan-lines::after { bottom: 0; left: 2px; transform: rotate(-15deg); }
 
         .slogan {
             font-family: 'Dancing Script', cursive; font-size: 28px; color: var(--green);
@@ -108,12 +59,27 @@
         .benefit:nth-child(even) .benefit-icon { border-color: var(--orange); color: var(--orange); }
         .benefit span { font-size: 10px; font-weight: 700; color: var(--text); line-height: 1.2; }
 
-        /* --- MAIN LAYOUT --- */
-        .layout { display: grid; grid-template-columns: 240px minmax(0, 1fr) 320px; gap: 20px; align-items: start; }
+        /* --- MAIN LAYOUT (CHỈ CÒN 2 CỘT) --- */
+        .layout { 
+            display: grid; 
+            grid-template-columns: 320px minmax(0, 1fr); /* Cột trái rộng ra để chứa giỏ hàng, cột phải là nội dung */
+            gap: 20px; 
+            align-items: start; 
+        }
+        
+        /* Cột bên trái (Bao gồm Menu và Giỏ hàng) */
+        .left-column { 
+            display: flex; 
+            flex-direction: column; 
+            gap: 20px; 
+            position: sticky; 
+            top: 20px; 
+        }
+
         .panel { background: var(--paper); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
 
-        /* --- SIDEBAR TRÁI --- */
-        .sidebar { padding: 20px 15px; display: flex; flex-direction: column; min-height: 750px; }
+        /* --- SIDEBAR (MENU) --- */
+        .sidebar { padding: 20px 15px; }
         .nav-btn {
             display: flex; align-items: center; gap: 12px; padding: 14px 15px; border-radius: 12px;
             font-weight: 600; font-size: 14px; color: var(--text); transition: 0.2s; margin-bottom: 5px; width: 100%; text-align: left;
@@ -125,27 +91,54 @@
 
         .brush-title {
             background: var(--green); color: white; text-align: center; padding: 8px; border-radius: 20px;
-            font-family: 'Dancing Script', cursive; font-size: 20px; margin: 30px 0 10px; transform: rotate(-2deg);
+            font-family: 'Dancing Script', cursive; font-size: 20px; margin: 20px 0 10px; transform: rotate(-2deg);
         }
-        .side-sub { text-align: center; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 20px; }
+        .side-sub { text-align: center; font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 15px; }
         
-        /* Logo Sidebar */
-        .side-brand { text-align: center; margin-bottom: 30px; display: flex; justify-content: center; flex-direction: column; align-items: center; }
-        .side-brand-icon { width: 60px; height: 60px; }
-        .side-brand-title {
-            font-size: 28px; font-weight: 800; line-height: 1; letter-spacing: -1px; display: flex; margin-top: 5px;
-        }
-        .side-brand-slogan { font-size: 9px; font-weight: 700; color: var(--green); margin-top: 3px; }
-
-        .side-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; margin-top: auto; }
+        .side-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; text-align: center; }
         .feature-item .f-icon {
             width: 38px; height: 38px; background: var(--green); color: white; border-radius: 50%;
             display: flex; justify-content: center; align-items: center; margin: 0 auto 5px; font-size: 15px;
         }
         .feature-item span { font-size: 9px; font-weight: 600; line-height: 1.2; display: block; }
 
-        /* --- CỘT GIỮA (NỘI DUNG ĐỘNG) --- */
-        main { display: flex; flex-direction: column; gap: 20px; min-height: 750px; }
+        /* --- GIỎ HÀNG (Đã chuyển sang cột trái) --- */
+        .cart { display: flex; flex-direction: column; padding: 20px; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
+        .cart-header h2 { font-size: 16px; color: var(--green); display: flex; align-items: center; gap: 8px; }
+        .cart-count { background: var(--green); color: white; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
+        .btn-clear { font-size: 11px; color: var(--muted); font-weight: 600; }
+        .btn-clear:hover { color: red; }
+
+        .cart-items { display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; max-height: 300px; overflow-y: auto; padding-right: 5px;}
+        .cart-item { display: flex; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .cart-info { flex-grow: 1; position: relative; }
+        .cart-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; padding-right: 15px; }
+        .cart-info p { font-size: 10px; color: var(--muted); margin-bottom: 5px; }
+        .cart-price { font-size: 12px; font-weight: 700; color: var(--green); }
+        .btn-remove { position: absolute; top: 0; right: 0; color: #ccc; font-size: 14px; }
+        .btn-remove:hover { color: red; }
+        .qty-control { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: -15px; }
+        .qty-control button { width: 22px; height: 22px; border: 1px solid var(--border); border-radius: 4px; background: #f9f9f9; font-size: 12px; display: flex; justify-content: center; align-items: center; }
+        .qty-control button:hover { background: var(--light-green); }
+        .qty-control span { font-size: 12px; font-weight: 700; width: 20px; text-align: center; }
+
+        .checkout-section { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
+        .coupon-area h3 { font-size: 12px; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
+        .coupon-input { display: flex; gap: 5px; margin-bottom: 5px; }
+        .coupon-input input { flex-grow: 1; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 11px; outline: none; }
+        .coupon-input input:focus { border-color: var(--green); }
+        .coupon-input button { background: var(--green); color: white; padding: 0 12px; border-radius: 6px; font-weight: 600; font-size: 11px; }
+        .coupon-msg { font-size: 10px; color: var(--green); min-height: 14px; margin-bottom: 10px; }
+        
+        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700; font-size: 14px; }
+        .total-row span:last-child { font-size: 18px; color: var(--green); }
+        .btn-checkout { width: 100%; background: var(--green); color: white; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; transition: 0.2s; }
+        .btn-checkout:hover { background: #215c2b; }
+
+        /* --- CỘT PHẢI (NỘI DUNG ĐỘNG) --- */
+        main { display: flex; flex-direction: column; gap: 20px; min-height: 100vh; }
         
         /* Hero Banner (Trang chủ) */
         .hero {
@@ -205,41 +198,6 @@
         .info-box h2 { font-size: 20px; color: var(--green); margin-bottom: 10px; }
         .info-box p { color: var(--muted); font-size: 13px; }
 
-        /* --- CỘT PHẢI (GIỎ HÀNG) --- */
-        .cart { display: flex; flex-direction: column; padding: 20px; height: 100%; min-height: 750px; position: sticky; top: 20px; }
-        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; margin-bottom: 15px; }
-        .cart-header h2 { font-size: 16px; color: var(--green); display: flex; align-items: center; gap: 8px; }
-        .cart-count { background: var(--green); color: white; font-size: 10px; width: 20px; height: 20px; border-radius: 50%; display: flex; justify-content: center; align-items: center; }
-        .btn-clear { font-size: 11px; color: var(--muted); font-weight: 600; }
-        .btn-clear:hover { color: red; }
-
-        .cart-items { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 15px; margin-bottom: 15px; max-height: 450px; padding-right: 5px;}
-        .cart-item { display: flex; gap: 10px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
-        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
-        .cart-info { flex-grow: 1; position: relative; }
-        .cart-info h4 { font-size: 12px; font-weight: 700; margin-bottom: 2px; padding-right: 15px; }
-        .cart-info p { font-size: 10px; color: var(--muted); margin-bottom: 5px; }
-        .cart-price { font-size: 12px; font-weight: 700; color: var(--green); }
-        .btn-remove { position: absolute; top: 0; right: 0; color: #ccc; font-size: 14px; }
-        .btn-remove:hover { color: red; }
-        .qty-control { display: flex; align-items: center; justify-content: flex-end; gap: 5px; margin-top: -15px; }
-        .qty-control button { width: 22px; height: 22px; border: 1px solid var(--border); border-radius: 4px; background: #f9f9f9; font-size: 12px; display: flex; justify-content: center; align-items: center; }
-        .qty-control button:hover { background: var(--light-green); }
-        .qty-control span { font-size: 12px; font-weight: 700; width: 20px; text-align: center; }
-
-        .checkout-section { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
-        .coupon-area h3 { font-size: 12px; color: var(--green); margin-bottom: 8px; display: flex; align-items: center; gap: 5px; }
-        .coupon-input { display: flex; gap: 5px; margin-bottom: 5px; }
-        .coupon-input input { flex-grow: 1; border: 1px solid var(--border); border-radius: 6px; padding: 8px; font-size: 11px; outline: none; }
-        .coupon-input input:focus { border-color: var(--green); }
-        .coupon-input button { background: var(--green); color: white; padding: 0 12px; border-radius: 6px; font-weight: 600; font-size: 11px; }
-        .coupon-msg { font-size: 10px; color: var(--green); min-height: 14px; margin-bottom: 10px; }
-        
-        .total-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-weight: 700; font-size: 14px; }
-        .total-row span:last-child { font-size: 18px; color: var(--green); }
-        .btn-checkout { width: 100%; background: var(--green); color: white; padding: 14px; border-radius: 10px; font-size: 15px; font-weight: 700; transition: 0.2s; }
-        .btn-checkout:hover { background: #215c2b; }
-
         /* --- MODAL CHI TIẾT SẢN PHẨM --- */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -280,59 +238,8 @@
 <div class="page">
     <!-- TOP BAR -->
     <header class="topbar">
-        <!-- LOGO HTML/CSS THUẦN - KHÔNG THỂ LỖI -->
         <div class="brand-area" onclick="switchTab('home')">
-            <!-- Hình vẽ bát cơm -->
-            <svg class="brand-icon-svg" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
-                <g fill="#368f3a">
-                    <path d="M 40 110 Q 20 100 25 75 Q 40 90 40 110 Z" />
-                    <path d="M 160 110 Q 180 100 175 75 Q 160 90 160 110 Z" />
-                </g>
-                <g>
-                    <circle cx="100" cy="35" r="25" fill="#f8b126" />
-                    <circle cx="100" cy="35" r="20" fill="#f9b934" />
-                    <path d="M 100 22 V 48 M 96 28 Q 104 28 104 33 Q 104 38 96 38 Q 88 38 88 43 Q 88 48 96 48" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
-                </g>
-                <g>
-                    <circle cx="70" cy="80" r="12" fill="#368f3a" />
-                    <circle cx="80" cy="75" r="10" fill="#368f3a" />
-                    <circle cx="60" cy="75" r="10" fill="#368f3a" />
-                    <circle cx="135" cy="85" r="10" fill="#e33b28" />
-                    <path d="M 135 75 L 135 85" stroke="#fff" stroke-width="2" />
-                    <path d="M 120 85 L 130 75 L 125 95 Z" fill="#f28e2b" />
-                    <path d="M 130 75 L 135 70" stroke="#368f3a" stroke-width="2" />
-                </g>
-                <path d="M 60 85 Q 100 65 140 85 Q 130 100 100 105 Q 70 100 60 85 Z" fill="#ffffff" />
-                <circle cx="80" cy="85" r="1.5" fill="#e0e0e0"/>
-                <circle cx="90" cy="80" r="1.5" fill="#e0e0e0"/>
-                <circle cx="110" cy="82" r="1.5" fill="#e0e0e0"/>
-                <circle cx="120" cy="88" r="1.5" fill="#e0e0e0"/>
-                <g>
-                    <path d="M 55 100 Q 75 90 85 105 Q 70 115 55 100 Z" fill="#d97736" />
-                    <path d="M 60 98 L 75 102 M 62 103 L 78 106" stroke="#7a3a16" stroke-width="2" stroke-linecap="round" />
-                </g>
-                <path d="M 45 95 C 45 95, 35 140, 60 160 C 85 170, 115 170, 140 160 C 165 140, 155 95, 155 95 Z" fill="#fcf6e5" stroke="#2d7236" stroke-width="6" stroke-linejoin="round" />
-                <g>
-                    <path d="M 75 130 Q 80 123 85 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    <path d="M 115 130 Q 120 123 125 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    <ellipse cx="70" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
-                    <ellipse cx="130" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
-                    <path d="M 90 138 Q 100 148 110 138" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                </g>
-                <path d="M 140 60 L 148 55 M 138 50 L 145 42 M 135 40 L 140 30" stroke="#368f3a" stroke-width="4" stroke-linecap="round" />
-            </svg>
-            
-            <!-- Chữ MealMate (HTML) -->
-            <div class="brand-text-wrap">
-                <div class="brand-title">
-                    <span class="meal">Meal</span>
-                    <span class="mate">Mate<span class="leaf-icon"></span></span>
-                </div>
-                <div class="brand-slogan">
-                    <span class="slogan-lines"></span>
-                    Đặt cơm theo ngân sách sinh viên.
-                </div>
-            </div>
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MDAgMTUwIj4KICA8ZGVmcz4KICAgIDxzdHlsZT4KICAgICAgLnRleHQtZ3JlZW4geyBmb250LWZhbWlseTogJ1F1aWNrc2FuZCcsIHNhbnMtc2VyaWY7IGZvbnQtd2VpZ2h0OiA4MDA7IGZvbnQtc2l6ZTogNzJweDsgZmlsbDogIzJkNzIzNjsgbGV0dGVyLXNwYWNpbmc6IC0ycHg7IH0KICAgICAgLnRleHQtb3JhbmdlIHsgZm9udC1mYW1pbHk6ICdRdWlja3NhbmQnLCBzYW5zLXNlcmlmOyBmb250LXdlaWdodDogODAwOyBmb250LXNpemU6IDcycHg7IGZpbGw6ICNmMjhlMmI7IGxldHRlci1zcGFjaW5nOiAtMnB4OyB9CiAgICAgIC50ZXh0LXNsb2dhbiB7IGZvbnQtZmFtaWx5OiAnUXVpY2tzYW5kJywgc2Fucy1zZXJpZjsgZm9udC13ZWlnaHQ6IDcwMDsgZm9udC1zaXplOiAxNnB4OyBmaWxsOiAjMmQ3MjM2OyB9CiAgICA8L3N0eWxlPgogIDwvZGVmcz4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSgyMCwgMjApIHNjYWxlKDAuNzUpIj4KICAgIDxnIGZpbGw9IiMzNjhmM2EiPgogICAgICA8cGF0aCBkPSJNIDQwIDExMCBRIDIwIDEwMCAyNSA3NSBRIDQwIDkwIDQwIDExMCBaIiAvPgogICAgICA8cGF0aCBkPSJNIDE2MCAxMTAgUSAxODAgMTAwIDE3NSA3NSBRIDE2MCA5MCAxNjAgMTEwIFoiIC8+CiAgICA8L2c+CiAgICA8Zz4KICAgICAgPGNpcmNsZSBjeD0iMTAwIiBjeT0iMzUiIHI9IjI1IiBmaWxsPSIjZjhiMTI2IiAvPgogICAgICA8Y2lyY2xlIGN4PSIxMDAiIGN5PSIzNSIgcj0iMjAiIGZpbGw9IiNmOWI5MzQiIC8+CiAgICAgIDxwYXRoIGQ9Ik0gMTAwIDIyIFYgNDggTSA5NiAyOCBRIDEwNCAyOCAxMDQgMzMgUSAxMDQgMzggOTYgMzggUSA4OCAzOCA4OCA0MyBRIDg4IDQ4IDk2IDQ4IiBzdHJva2U9IiNmZmYiIHN0cm9rZS13aWR0aD0iMyIgZmlsbD0ibm9uZSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+CiAgICA8L2c+CiAgICA8Zz4KICAgICAgPGNpcmNsZSBjeD0iNzAiIGN5PSI4MCIgcj0iMTIiIGZpbGw9IiMzNjhmM2EiIC8+CiAgICAgIDxjaXJjbGUgY3g9IjgwIiBjeT0iNzUiIHI9IjEwIiBmaWxsPSIjMzY4ZjNhIiAvPgogICAgICA8Y2lyY2xlIGN4PSI2MCIgY3k9Ijc1IiByPSIxMCIgZmlsbD0iIzM2OGYzYSIgLz4KICAgICAgPGNpcmNsZSBjeD0iMTM1IiBjeT0iODUiIHI9IjEwIiBmaWxsPSIjZTMzYjI4IiAvPgogICAgICA8cGF0aCBkPSJNIDEzNSA3NSBMIDEzNSA4NSIgc3Ryb2tlPSIjZmZmIiBzdHJva2Utd2lkdGg9IjIiIC8+CiAgICAgIDxwYXRoIGQ9Ik0gMTIwIDg1IEwgMTMwIDc1IEwgMTI1IDk1IFoiIGZpbGw9IiNmMjhlMmIiIC8+CiAgICAgIDxwYXRoIGQ9Ik0gMTMwIDc1IEwgMTM1IDcwIiBzdHJva2U9IiMzNjhmM2EiIHN0cm9rZS13aWR0aD0iMiIgLz4KICAgIDwvZz4KICAgIDxwYXRoIGQ9Ik0gNjAgODUgUSAxMDAgNjUgMTQwIDg1IFEgMTMwIDEwMCAxMDAgMTA1IFEgNzAgMTAwIDYwIDg1IFoiIGZpbGw9IiNmZmZmZmYiIC8+CiAgICA8Y2lyY2xlIGN4PSI4MCIgY3k9Ijg1IiByPSIxLjUiIGZpbGw9IiNlMGUwZTAiLz4KICAgIDxjaXJjbGUgY3g9IjkwIiBjeT0iODAiIHI9IjEuNSIgZmlsbD0iI2UwZTBlMCIvPgogICAgPGNpcmNsZSBjeD0iMTEwIiBjeT0iODIiIHI9IjEuNSIgZmlsbD0iI2UwZTBlMCIvPgogICAgPGNpcmNsZSBjeD0iMTIwIiBjeT0iODgiIHI9IjEuNSIgZmlsbD0iI2UwZTBlMCIvPgogICAgPGc+CiAgICAgIDxwYXRoIGQ9Ik0gNTUgMTAwIFEgNzUgOTAgODUgMTA1IFEgNzAgMTE1IDU1IDEwMCBaIiBmaWxsPSIjZDk3NzM2IiAvPgogICAgICA8cGF0aCBkPSJNIDYwIDk4IEwgNzUgMTAyIE0gNjIgMTAzIEwgNzggMTA2IiBzdHJva2U9IiM3YTNhMTYiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiAvPgogICAgPC9nPgogICAgPHBhdGggZD0iTSA0NSA5NSBDIDQ1IDk1LCAzNSAxNDAsIDYwIDE2MCBDIDg1IDE3MCwgMTE1IDE3MCwgMTQwIDE2MCBDIDE2NSAxNDAsIDE1NSA5NSwgMTU1IDk1IFoiIGZpbGw9IiNmY2Y2ZTUiIHN0cm9rZT0iIzJkNzIzNiIgc3Ryb2tlLXdpZHRoPSI2IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiAvPgogICAgPGc+CiAgICAgIDxwYXRoIGQ9Ik0gNzUgMTMwIFEgODAgMTIzIDg1IDEzMCIgc3Ryb2tlPSIjMmQ3MjM2IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgICA8cGF0aCBkPSJNIDExNSAxMzAgUSAxMjAgMTIzIDEyNSAxMzAiIHN0cm9rZT0iIzJkNzIzNiIgc3Ryb2tlLXdpZHRoPSI0IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KICAgICAgPGVsbGlwc2UgY3g9IjcwIiBjeT0iMTQwIiByeD0iNyIgcnk9IjQiIGZpbGw9IiNmOGIxMjYiIG9wYWNpdHk9IjAuNiIvPgogICAgICA8ZWxsaXBzZSBjeD0iMTMwIiBjeT0iMTQwIiByeD0iNyIgcnk9IjQiIGZpbGw9IiNmOGIxMjYiIG9wYWNpdHk9IjAuNiIvPgogICAgICA8cGF0aCBkPSJNIDkwIDEzOCBRIDEwMCAxNDggMTEwIDEzOCIgc3Ryb2tlPSIjMmQ3MjM2IiBzdHJva2Utd2lkdGg9IjQiIGZpbGw9Im5vbmUiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgogICAgPC9nPgogICAgPHBhdGggZD0iTSAxNDAgNjAgTCAxNDggNTUgTSAxMzggNTAgTCAxNDUgNDIgTSAxMzUgNDAgTCAxNDAgMzAiIHN0cm9rZT0iIzM2OGYzYSIgc3Ryb2tlLXdpZHRoPSI0IiBzdHJva2UtbGluZWNhcD0icm91bmQiIC8+CiAgPC9nPgogIDx0ZXh0IHg9IjE2MCIgeT0iODUiIGNsYXNzPSJ0ZXh0LWdyZWVuIj5NZWFsPC90ZXh0PgogIDx0ZXh0IHg9IjI5NSIgeT0iODUiIGNsYXNzPSJ0ZXh0LW9yYW5nZSI+TWF0ZTwvdGV4dD4KICA8ZyB0cmFuc2Zvcm09InRyYW5zbGF0ZSg0NDUsIDIwKSBzY2FsZSgxLjgpIj4KICAgIDxwYXRoIGQ9Ik0wLDAgQzUsLTUgMTAsLTUgMTAsMCBDMTAsNSA1LDEwIDAsNSBaIiBmaWxsPSIjMzY4ZjNhIiAvPgogIDwvZz4KICA8dGV4dCB4PSIxNjAiIHk9IjEyMCIgY2xhc3M9InRleHQtc2xvZ2FuIj7EkOG6t3QgY8ahbSB0aGVvIG5nw6JuIHPDoWNoIHNpbmggdmnDqm4uPC90ZXh0PgogIDxwYXRoIGQ9Ik0gMTQ1IDEwOCBMIDE1NSAxMDUgTSAxNDUgMTE1IEwgMTU1IDExMiIgc3Ryb2tlPSIjZjI4ZTJiIiBzdHJva2Utd2lkdGg9IjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgLz4KPC9zdmc+" alt="MealMate Logo" class="brand-logo-img">
         </div>
         
         <div class="slogan">
@@ -359,85 +266,71 @@
         </div>
     </header>
 
-    <!-- LAYOUT 3 CỘT -->
+    <!-- LAYOUT 2 CỘT (TRÁI: MENU + GIỎ HÀNG | PHẢI: NỘI DUNG) -->
     <div class="layout">
         
-        <!-- CỘT TRÁI (SIDEBAR) -->
-        <aside class="panel sidebar">
-            <nav>
-                <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Trang chủ</button>
-                <button class="nav-btn" data-tab="menu" onclick="switchTab('menu')"><i class="fa-solid fa-utensils"></i> Thực đơn</button>
-                <button class="nav-btn" data-tab="orders" onclick="switchTab('orders')"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</button>
-                <button class="nav-btn" data-tab="promotions" onclick="switchTab('promotions')"><i class="fa-solid fa-tag"></i> Ưu đãi</button>
-                <button class="nav-btn" data-tab="account" onclick="switchTab('account')"><i class="fa-solid fa-user"></i> Tài khoản</button>
-            </nav>
+        <!-- CỘT TRÁI -->
+        <div class="left-column">
+            <!-- MENU -->
+            <aside class="panel sidebar">
+                <nav>
+                    <button class="nav-btn active" data-tab="home" onclick="switchTab('home')"><i class="fa-solid fa-house"></i> Trang chủ</button>
+                    <button class="nav-btn" data-tab="menu" onclick="switchTab('menu')"><i class="fa-solid fa-utensils"></i> Thực đơn</button>
+                    <button class="nav-btn" data-tab="orders" onclick="switchTab('orders')"><i class="fa-solid fa-clipboard-list"></i> Đơn hàng</button>
+                    <button class="nav-btn" data-tab="promotions" onclick="switchTab('promotions')"><i class="fa-solid fa-tag"></i> Ưu đãi</button>
+                    <button class="nav-btn" data-tab="account" onclick="switchTab('account')"><i class="fa-solid fa-user"></i> Tài khoản</button>
+                </nav>
 
-            <div class="brush-title">Giao diện đặt hàng</div>
-            <div class="side-sub">Đơn giản - Nhanh chóng - Tiện lợi</div>
+                <div class="brush-title">Giao diện đặt hàng</div>
+                <div class="side-sub">Đơn giản - Nhanh chóng - Tiện lợi</div>
+                
+                <div class="side-features">
+                    <div class="feature-item">
+                        <div class="f-icon"><i class="fa-solid fa-mobile-screen"></i></div>
+                        <span>Đặt món<br>mọi lúc, mọi nơi</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="f-icon"><i class="fa-solid fa-motorcycle"></i></div>
+                        <span>Theo dõi<br>real-time</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="f-icon"><i class="fa-solid fa-users"></i></div>
+                        <span>Đặt cơm<br>theo nhóm</span>
+                    </div>
+                </div>
+            </aside>
 
-            <!-- LOGO NHỎ Ở SIDEBAR (HTML) -->
-            <div class="side-brand">
-                <svg class="side-brand-icon" viewBox="0 0 200 180" xmlns="http://www.w3.org/2000/svg">
-                    <g fill="#368f3a">
-                        <path d="M 40 110 Q 20 100 25 75 Q 40 90 40 110 Z" />
-                        <path d="M 160 110 Q 180 100 175 75 Q 160 90 160 110 Z" />
-                    </g>
-                    <g>
-                        <circle cx="100" cy="35" r="25" fill="#f8b126" />
-                        <circle cx="100" cy="35" r="20" fill="#f9b934" />
-                        <path d="M 100 22 V 48 M 96 28 Q 104 28 104 33 Q 104 38 96 38 Q 88 38 88 43 Q 88 48 96 48" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"/>
-                    </g>
-                    <g>
-                        <circle cx="70" cy="80" r="12" fill="#368f3a" />
-                        <circle cx="80" cy="75" r="10" fill="#368f3a" />
-                        <circle cx="60" cy="75" r="10" fill="#368f3a" />
-                        <circle cx="135" cy="85" r="10" fill="#e33b28" />
-                        <path d="M 135 75 L 135 85" stroke="#fff" stroke-width="2" />
-                        <path d="M 120 85 L 130 75 L 125 95 Z" fill="#f28e2b" />
-                        <path d="M 130 75 L 135 70" stroke="#368f3a" stroke-width="2" />
-                    </g>
-                    <path d="M 60 85 Q 100 65 140 85 Q 130 100 100 105 Q 70 100 60 85 Z" fill="#ffffff" />
-                    <circle cx="80" cy="85" r="1.5" fill="#e0e0e0"/>
-                    <circle cx="90" cy="80" r="1.5" fill="#e0e0e0"/>
-                    <circle cx="110" cy="82" r="1.5" fill="#e0e0e0"/>
-                    <circle cx="120" cy="88" r="1.5" fill="#e0e0e0"/>
-                    <g>
-                        <path d="M 55 100 Q 75 90 85 105 Q 70 115 55 100 Z" fill="#d97736" />
-                        <path d="M 60 98 L 75 102 M 62 103 L 78 106" stroke="#7a3a16" stroke-width="2" stroke-linecap="round" />
-                    </g>
-                    <path d="M 45 95 C 45 95, 35 140, 60 160 C 85 170, 115 170, 140 160 C 165 140, 155 95, 155 95 Z" fill="#fcf6e5" stroke="#2d7236" stroke-width="6" stroke-linejoin="round" />
-                    <g>
-                        <path d="M 75 130 Q 80 123 85 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                        <path d="M 115 130 Q 120 123 125 130" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                        <ellipse cx="70" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
-                        <ellipse cx="130" cy="140" rx="7" ry="4" fill="#f8b126" opacity="0.6"/>
-                        <path d="M 90 138 Q 100 148 110 138" stroke="#2d7236" stroke-width="4" fill="none" stroke-linecap="round"/>
-                    </g>
-                </svg>
-                <div class="side-brand-title">
-                    <span class="meal">Meal</span>
-                    <span class="mate">Mate</span>
+            <!-- GIỎ HÀNG (Đã chuyển vào đây) -->
+            <aside class="panel cart">
+                <div class="cart-header">
+                    <h2><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng <span class="cart-count" id="cart-count">0</span></h2>
+                    <button class="btn-clear" onclick="clearCart()">Xóa tất cả</button>
                 </div>
-                <div class="side-brand-slogan">Đặt cơm theo ngân sách sinh viên.</div>
-            </div>
+                
+                <div class="cart-items" id="cart-items">
+                    <!-- Render từ JS -->
+                </div>
 
-            <div class="side-features">
-                <div class="feature-item">
-                    <div class="f-icon"><i class="fa-solid fa-mobile-screen"></i></div>
-                    <span>Đặt món<br>mọi lúc, mọi nơi</span>
+                <div class="checkout-section">
+                    <div class="coupon-area">
+                        <h3><i class="fa-solid fa-ticket"></i> Mã giảm giá</h3>
+                        <div class="coupon-input">
+                            <input type="text" id="coupon" placeholder="Nhập mã">
+                            <button onclick="applyCoupon()">Áp dụng</button>
+                        </div>
+                        <div class="coupon-msg" id="coupon-msg"></div>
+                    </div>
+                    
+                    <div class="total-row">
+                        <span>Tổng tiền</span>
+                        <span id="total-price">0đ</span>
+                    </div>
+                    <button class="btn-checkout" onclick="checkout()">Đặt hàng</button>
                 </div>
-                <div class="feature-item">
-                    <div class="f-icon"><i class="fa-solid fa-motorcycle"></i></div>
-                    <span>Theo dõi<br>real-time</span>
-                </div>
-                <div class="feature-item">
-                    <div class="f-icon"><i class="fa-solid fa-users"></i></div>
-                    <span>Đặt cơm<br>theo nhóm</span>
-                </div>
-            </div>
-        </aside>
+            </aside>
+        </div>
 
-        <!-- CỘT GIỮA (NỘI DUNG THAY ĐỔI) -->
+        <!-- CỘT PHẢI (NỘI DUNG THAY ĐỔI) -->
         <main>
             <!-- TAB 1: TRANG CHỦ -->
             <div id="tab-home" class="page-tab active">
@@ -530,35 +423,6 @@
                 <span style="display: block; font-family: 'Quicksand', sans-serif; font-size: 11px; font-weight: 700; color: var(--muted); margin-top: 5px;">- Người bạn đồng hành trên mỗi bữa ăn! <i class="fa-solid fa-heart" style="color: var(--orange);"></i></span>
             </div>
         </main>
-
-        <!-- CỘT PHẢI (GIỎ HÀNG) -->
-        <aside class="panel cart">
-            <div class="cart-header">
-                <h2><i class="fa-solid fa-cart-shopping"></i> Giỏ hàng <span class="cart-count" id="cart-count">0</span></h2>
-                <button class="btn-clear" onclick="clearCart()">Xóa tất cả</button>
-            </div>
-            
-            <div class="cart-items" id="cart-items">
-                <!-- Render từ JS -->
-            </div>
-
-            <div class="checkout-section">
-                <div class="coupon-area">
-                    <h3><i class="fa-solid fa-ticket"></i> Mã giảm giá</h3>
-                    <div class="coupon-input">
-                        <input type="text" id="coupon" placeholder="Nhập mã">
-                        <button onclick="applyCoupon()">Áp dụng</button>
-                    </div>
-                    <div class="coupon-msg" id="coupon-msg"></div>
-                </div>
-                
-                <div class="total-row">
-                    <span>Tổng tiền</span>
-                    <span id="total-price">0đ</span>
-                </div>
-                <button class="btn-checkout" onclick="checkout()">Đặt hàng</button>
-            </div>
-        </aside>
     </div>
 </div>
 
